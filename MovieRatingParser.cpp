@@ -1,10 +1,7 @@
 #include <iostream>
 #include <fstream>
-#include <string>
 #include <map>
-#include <utility>
-#include <stdio.h>
-#include <string.h>
+
 
 #include "MovieRatingParser.hpp"
 
