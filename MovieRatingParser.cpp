@@ -10,37 +10,26 @@
 
 using namespace std;
 
-
- 
-
 int MovieRatingParser::parser() {
+
 	string line;
-	// need to make a pair to keep track of count of reviews for named movie
-	map<string, int> ratingsMap;
 	int numberOfRatings;
+	multimap<string, double> ratingsMap;
 	ifstream ratingsFile(FILENAME);
 
 	if (ratingsFile.is_open()) {
 
 		// gets NumberOfRatings from first line
-		if (getline(ratingsFile, line)) {
-			numberOfRatings = stoi(line);
-		}
-		int lineCount = 0;
-		int rating;
+		if (getline(ratingsFile, line)) numberOfRatings = stoi(line);
+
 		string movieName;
-		while (getline (ratingsFile, line)) {
-			if (lineCount % 2 == 0) {
-				cout << "movieName: " << line << '\n';
+
+		for (int i = 0; getline (ratingsFile, line); i++) {
+			if (i % 2 == 0) 
 				movieName = line;
-				lineCount++;
+			else {
+				ratingsMap.insert(std::pair<string, double>(movieName, stoi(line)));
 			}
-			else if (lineCount % 2 != 0){
-				cout << "count: " << line << '\n';
-				rating = stoi(line);
-				lineCount++;
-			}
-			ratingsMap.insert(std::pair<string, int>(movieName, rating));
 		}
 		ratingsFile.close();
 	}
@@ -48,21 +37,23 @@ int MovieRatingParser::parser() {
 		cout << "File cannot be opened";
 		return -1;
 	}
-	for(auto elem : ratingsMap)
+	map<string, double> avgMap;
+	for (auto movieName: ratingsMap)
 	{
-	   std::cout << elem.first << " " << elem.second << "\n";
+		pair <std::multimap<string, double>::iterator, std::multimap<string, double>::iterator> ret;
+		ret = ratingsMap.equal_range(movieName.first);
+		double sum = 0;
+		for (multimap<string, double>::iterator it = ret.first; it != ret.second; ++it) {
+      		sum += it->second;
+		}
+		avgMap.insert(std::make_pair(movieName.first, (sum/(double)ratingsMap.count(movieName.first))));
 	}
+	for (auto avg : avgMap) {
+		cout << avg.first << ' ' << avg.second << '\n';
+	}
+
 	return 0;
 }
 void MovieRatingParser::parse() {
 	parser();
-}
-void print() {
-
-
-}
-int main(int argc, char** argsv) {
-	MovieRatingParser parser;
-	parser.parse();
-	return 0;
 }

@@ -1,7 +1,8 @@
 #include <iostream>
-#include <fstream>
+#include "MovieRatingParser.hpp"
 
 int main(int argc, char** argsv) {
-
-	std::cout << "hello";
+	MovieRatingParser parser;
+	parser.parse();
+	return 0;
 }
