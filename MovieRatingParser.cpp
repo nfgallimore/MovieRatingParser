@@ -49,11 +49,18 @@ int MovieRatingParser::parser() {
 		avgMap.insert(std::make_pair(movieName.first, (sum/(double)ratingsMap.count(movieName.first))));
 	}
 	for (auto avg : avgMap) {
-		if (ratingsMap.count(avg.first) == floor(ratingsMap.count(avg.first)))
-			cout << avg.first << ": " << ratingsMap.count(avg.first) << " reviews, average of " << avg.second << " out of 5\n";
-		else 
-			cout << avg.first << ": " << ratingsMap.count(avg.first) << " review, average of " << std::fixed << std::setprecision(1) << avg.second << " out of 5\n";
-
+		if (ratingsMap.count(avg.first) > 1) {
+			if (avgMap.find(avg.first)->second == floor(avgMap.find(avg.first)->second))
+				cout << avg.first << ": " << ratingsMap.count(avg.first) << " reviews, average of " << (int)avg.second << " out of 5\n";
+			else 
+				cout << avg.first << ": " << ratingsMap.count(avg.first) << " reviews, average of " << std::fixed << std::setprecision(1) << avg.second << " out of 5\n";
+		}
+		else {
+			if (avgMap.find(avg.first)->second == floor(avgMap.find(avg.first)->second))
+				cout << avg.first << ": " << ratingsMap.count(avg.first) << " review, average of " << (int)avg.second << " out of 5\n";
+			else 
+				cout << avg.first << ": " << ratingsMap.count(avg.first) << " review, average of " << std::fixed << std::setprecision(1) << avg.second << " out of 5\n";
+		}
 	}
 
 	return 0;
