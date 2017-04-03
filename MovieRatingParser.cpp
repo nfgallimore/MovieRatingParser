@@ -1,7 +1,10 @@
 #include <iostream>
 #include <fstream>
 #include <map>
-
+#include <sstream>
+#include <iomanip>
+#include <cmath>
+#include <limits>
 
 #include "MovieRatingParser.hpp"
 
@@ -46,7 +49,11 @@ int MovieRatingParser::parser() {
 		avgMap.insert(std::make_pair(movieName.first, (sum/(double)ratingsMap.count(movieName.first))));
 	}
 	for (auto avg : avgMap) {
-		cout << avg.first << ' ' << avg.second << '\n';
+		if (ratingsMap.count(avg.first) == floor(ratingsMap.count(avg.first)))
+			cout << avg.first << ": " << ratingsMap.count(avg.first) << " reviews, average of " << avg.second << " out of 5\n";
+		else 
+			cout << avg.first << ": " << ratingsMap.count(avg.first) << " review, average of " << std::fixed << std::setprecision(1) << avg.second << " out of 5\n";
+
 	}
 
 	return 0;
